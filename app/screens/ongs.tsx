@@ -15,7 +15,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { TabParamList, RootStackParamList } from '../types/navigation';
 
 type Props = CompositeScreenProps<
-    BottomTabScreenProps<TabParamList, 'Explorar'>,
+    BottomTabScreenProps<TabParamList, 'Ongs'>,
     NativeStackScreenProps<RootStackParamList>
 >;
 
@@ -32,7 +32,7 @@ export default function Home({ route, navigation }: Props) {
     }, []);
 
     // Função que define como CADA item da lista será desenhado
-    const renderPet = ({ item }: { item: typeof PETS_DATA[0] }) => (
+    const renderOng = ({ item }: { item: typeof ONGS_DATA[0] }) => (
         <TouchableOpacity
             style={[styles.card, { backgroundColor: item.cor }]}
             activeOpacity={0.8}
@@ -43,11 +43,11 @@ export default function Home({ route, navigation }: Props) {
             </View>
 
             <View style={styles.cardInfo}>
-                <Text style={styles.petNome}>{item.nome}</Text>
-                <Text style={styles.petDetalhes}>
-                    {item.especie} • {item.idade}
+                <Text style={styles.ongNome}>{item.nome}</Text>
+                <Text style={styles.ongDetalhes}>
+                    {item.nome} • {item.cidade}
                 </Text>
-                <Text style={styles.petCity}>
+                <Text style={styles.ongCity}>
                     📍 {item.cidade}
                 </Text>
             </View>
@@ -64,8 +64,8 @@ export default function Home({ route, navigation }: Props) {
 
             <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
                 <FlatList
-                    data={PETS_DATA} // 1. A fonte de dados
-                    renderItem={renderPet} // 2. Como cada item deve ser renderizado
+                    data={ONGS_DATA} // 1. A fonte de dados
+                    renderItem={renderOng} // 2. Como cada item deve ser renderizado
                     keyExtractor={(item) => item.id} // 3. Identificador único para cada item
                     contentContainerStyle={styles.listContent} // 4. Estilo do conteúdo da lista
                 />
@@ -74,28 +74,14 @@ export default function Home({ route, navigation }: Props) {
     );
 }
 
-// ===== DADOS MOCKADOS DOS PETS =====
-const PETS_DATA = [
-    {
-        id: '1', nome: 'Bobi', especie: 'Cachorro', idade: '2 anos', porte: 'Médio', cidade: 'São Paulo, SP', cor: '#FFE8CC', emoji: '🐶', tags: ['Brincalhão', 'Vacinado', 'Castrado'], descricao: 'Bobi é um cachorro jovem e cheio de energia que adora correr e brincar no parque. É super carinhoso, inteligente e se dá muito bem com crianças e outros pets. Procuramos uma família ativa que possa dar bastante atenção e exercício a ele.', peso: '12 kg', saude: ['Vacinado em dia', 'Castrado', 'Vermifugado', 'Microchipado'],
-    },
-    {
-        id: '2', nome: 'Mel', especie: 'Gato', idade: '1 ano', porte: 'Pequeno', cidade: 'Campinas, SP', cor: '#E8F4E8', emoji: '🐱', tags: ['Tranquilo', 'Vacinado', 'Indoor'], descricao: 'Mel é uma gatinha delicada e carinhosa que ama colos e ambientes tranquilos. Perfeita para apartamentos, ela passa a maior parte do tempo dormindo ao sol. Já está acostumada com caixa de areia e arranhador.', peso: '3,5 kg', saude: ['Vacinada em dia', 'Castrada', 'Vermifugada', 'Saudável'],
-
-    },
-    {
-        id: '3', nome: 'Rex', especie: 'Cachorro', idade: '4 anos', porte: 'Grande', cidade: 'Santos, SP', cor: '#EDE8FF', emoji: '🦮', tags: ['Protetor', 'Adestrado', 'Castrado'], descricao: 'Rex é um cachorro leal, inteligente e já adestrado. Responde a comandos básicos e adora aprender truques. É protetor com sua família mas dócil com visitantes. Precisa de um espaço amplo para se sentir bem.', peso: '28 kg', saude: ['Vacinado em dia', 'Castrado', 'Vermifugado', 'Adestrado'],
-
-    },
-    {
-        id: '4', nome: 'Nina', especie: 'Coelha', idade: '8 meses', porte: 'Pequeno', cidade: 'São Paulo, SP', cor: '#FFE8F0', emoji: '🐰', tags: ['Delicada', 'Vacinada', 'Sociável'], descricao: 'Nina é uma coelhinha cheia de personalidade e energia! Adora brincar, pular e explorar. Se dá bem com outras coelhas e animais calmos. Precisa de um lar com gaiola espaçosa e momentos livres para se exercitar.', peso: '1,8 kg', saude: ['Vacinada', 'Vermifugada', 'Saudável'],
-
-    },
-    {
-        id: '5', nome: 'Thor', especie: 'Cachorro', idade: '3 anos', porte: 'Grande', cidade: 'Guarulhos, SP', cor: '#FFF3E0', emoji: '🐕', tags: ['Energético', 'Vacinado', 'Ativa'], descricao: 'Thor é um cachorro extremamente energético que precisa de muito exercício diário. Ama trilhas, corridas e atividades ao ar livre. Prefere um lar com quintal ou família muito ativa. É leal e amoroso com seus tutores.', peso: '32 kg', saude: ['Vacinado em dia', 'Vermifugado', 'Saudável'],
-
-    },
-];
+// ===== DADOS MOCKADOS DAS ONGS =====
+const ONGS_DATA = [
+    { id: '1', nome: 'Amigos dos Animais', cidade: 'Lisboa', emoji: '🏠', cor: '#FFE8CC' },
+    { id: '2', nome: 'Patas Felizes', cidade: 'Porto', emoji: '🏚️', cor: '#FFD1A9' },
+    { id: '3', nome: 'Lar dos Bichos', cidade: 'Coimbra', emoji: '🏡', cor: '#FFB380' },
+    { id: '4', nome: 'Refúgio Animal', cidade: 'Faro', emoji: '🏘️', cor: '#FF8C4B' },
+    { id: '5', nome: 'Casa dos Animais', cidade: 'Braga', emoji: '🛖', cor: '#FF6A1B' },
+]
 
 const styles = StyleSheet.create({
     container: {
@@ -156,19 +142,19 @@ const styles = StyleSheet.create({
         marginLeft: 16,
     },
 
-    petNome: {
+    ongNome: {
         fontSize: 20,
         fontWeight: '800',
         color: '#132B34',
     },
 
-    petDetalhes: {
+    ongDetalhes: {
         fontSize: 14,
         color: '#607D8A',
         marginTop: 2,
     },
 
-    petCity: {
+    ongCity: {
         fontSize: 12,
         color: '#607D8A',
         marginTop: 6,

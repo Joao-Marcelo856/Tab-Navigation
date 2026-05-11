@@ -8,4 +8,6 @@ export type TabParamList = {
   Explorar: { usuario: string };
   Favoritos: { usuario: string };
   Perfil: { usuario: string };
+  Ongs: { usuario: string };
+  Login: undefined;
 };

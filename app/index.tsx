@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { RootStackParamList, TabParamList } from "./types/navigation";
 
 // Importa as telas corrigidas
+import Ongs from "./screens/ongs";
 import Login from "./screens/Login";
 import Home from "./screens/Home";
 import Perfil from "./screens/Perfil";
@@ -27,20 +28,25 @@ function TabNavigator({ route }: any) {
         component={Perfil}
         initialParams={{ usuario }}
       />
+      <Tab.Screen
+        name="Ongs"
+        component={Ongs}
+        initialParams={{ usuario }}
+      />
     </Tab.Navigator>
   );
 }
 
 export default function AppNavigation() {
   return (
-      <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="MainTabs" component={TabNavigator} />
-        <Stack.Screen
-          name="PetDetalhes"
-          component={Detalhes}
-          options={{ headerShown: true, title: 'Detalhes' }}
-        />
-      </Stack.Navigator>
+    <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="MainTabs" component={TabNavigator} />
+      <Stack.Screen
+        name="PetDetalhes"
+        component={Detalhes}
+        options={{ headerShown: true, title: 'Detalhes' }}
+      />
+    </Stack.Navigator>
   );
 }
