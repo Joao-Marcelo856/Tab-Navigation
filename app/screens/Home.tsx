@@ -61,6 +61,10 @@ export default function Home({ route, navigation }: Props) {
     return (
         <View style={styles.container}>
             <StatusBar barStyle="dark-content" />
+            <View style={styles.headerArea}>
+                <Text style={styles.welcome}>Olá, {usuario}!</Text>
+                <Text style={styles.title}>Pets para Adoção</Text>
+            </View>
 
             <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
                 <FlatList
@@ -187,5 +191,10 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         color: '#132B34',
+    },
+    headerArea: {
+        paddingHorizontal: 24,
+        paddingTop: 60,
+        marginBottom: 10,
     },
 });
