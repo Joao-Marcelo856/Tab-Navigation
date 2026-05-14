@@ -1,10 +1,11 @@
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
     Alert,
     Animated,
+    Modal,
     ScrollView,
     StyleSheet,
     Text,
@@ -35,6 +36,9 @@ export default function Perfil({ route, navigation }: Props) {
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const slideAnim = useRef(new Animated.Value(30)).current;
     const avatarScale = useRef(new Animated.Value(0.7)).current;
+
+    // ===== ESTADO DO MODAL =====
+    const [interestsDialogVisible, setInterestsDialogVisible] = useState(false);
 
     // ===== ANIMAÇÕES DE ENTRADA =====
     useEffect(() => {
@@ -91,6 +95,15 @@ export default function Perfil({ route, navigation }: Props) {
         );
     };
 
+    const handleEditInteresses = () => {
+        setInterestsDialogVisible(true);
+    };
+
+    const handleSelectInterest = (interest: string) => {
+        setInterestsDialogVisible(false);
+        Alert.alert('Preferência salva', `${interest} selecionado.`);
+    };
+
     // ===== OBTÉM PRIMEIRA LETRA DO NOME =====
     // .charAt(0) pega o primeiro caractere
     // .toUpperCase() converte para maiúscula
@@ -98,6 +111,37 @@ export default function Perfil({ route, navigation }: Props) {
 
     return (
         <View style={styles.root}>
+            <Modal
+                visible={interestsDialogVisible}
+                transparent
+                animationType="fade"
+                onRequestClose={() => setInterestsDialogVisible(false)}
+            >
+                <View style={styles.modalOverlay}>
+                    <View style={styles.modalContent}>
+                        <Text style={styles.modalTitle}>Quais causas você prefere?</Text>
+                        {['Educação', 'Meio Ambiente', 'Saúde'].map((cause) => (
+                            <TouchableOpacity
+                                key={cause}
+                                style={styles.modalOption}
+                                onPress={() => handleSelectInterest(cause)}
+                                activeOpacity={0.8}
+                            >
+                                <Text style={styles.modalOptionText}>{cause}</Text>
+                            </TouchableOpacity>
+                        ))}
+
+                        <TouchableOpacity
+                            style={styles.modalCancel}
+                            onPress={() => setInterestsDialogVisible(false)}
+                            activeOpacity={0.8}
+                        >
+                            <Text style={styles.modalCancelText}>Cancelar</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
+
             <ScrollView showsVerticalScrollIndicator={false}>
                 {/* ===== HEADER COM FUNDO DECORATIVO ===== */}
                 <View style={styles.headerBg}>
@@ -188,7 +232,14 @@ export default function Perfil({ route, navigation }: Props) {
                         ))}
                     </View>
 
-                    {/* ===== BOTÃO DE LOGOUT ===== */}
+                    <TouchableOpacity
+                        style={styles.editInterestsBtn}
+                        onPress={handleEditInteresses}
+                        activeOpacity={0.85}
+                    >
+                        <Text style={styles.editInterestsText}>Editar Interesses</Text>
+                    </TouchableOpacity>
+
                     <TouchableOpacity
                         style={styles.logoutBtn}
                         onPress={handleLogout}
@@ -209,6 +260,11 @@ const styles = StyleSheet.create({
     root: {
         flex: 1,
         backgroundColor: '#FDF6EE',
+    },
+    logoutText: {
+        fontSize: 15,
+        fontWeight: '700',
+        color: '#E05C5C',
     },
     headerBg: {
         height: 200,
@@ -415,8 +471,27 @@ const styles = StyleSheet.create({
         color: '#BBA89A',
         fontWeight: '300'
     },
-    logoutBtn: {
+    editInterestsBtn: {
         marginTop: 20,
+        width: '100%',
+        height: 50,
+        borderRadius: 14,
+        backgroundColor: '#E8A87C',
+        justifyContent: 'center',
+        alignItems: 'center',
+        shadowColor: '#8C5A3E',
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.18,
+        shadowRadius: 14,
+        elevation: 5,
+    },
+    editInterestsText: {
+        fontSize: 15,
+        fontWeight: '700',
+        color: '#3D2314',
+    },
+    logoutBtn: {
+        marginTop: 16,
         width: '100%',
         height: 50,
         borderRadius: 14,
@@ -424,15 +499,64 @@ const styles = StyleSheet.create({
         borderColor: '#E05C5C',
         justifyContent: 'center',
         alignItems: 'center',
-    },
-    logoutText: {
-        fontSize: 15,
-        fontWeight: '700',
-        color: '#E05C5C',
+        backgroundColor: '#FFF',
+        shadowColor: '#C55A4D',
+        shadowOffset: { width: 0, height: 5 },
+        shadowOpacity: 0.1,
+        shadowRadius: 10,
+        elevation: 4,
     },
     version: {
         fontSize: 12,
         color: '#BBA89A',
         marginTop: 20,
+    },
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.35)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 24,
+    },
+    modalContent: {
+        width: '100%',
+        backgroundColor: '#FFF',
+        borderRadius: 22,
+        padding: 20,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 10 },
+        shadowOpacity: 0.14,
+        shadowRadius: 20,
+        elevation: 8,
+    },
+    modalTitle: {
+        fontSize: 18,
+        fontWeight: '800',
+        color: '#3D2314',
+        marginBottom: 16,
+    },
+    modalOption: {
+        backgroundColor: '#F7E8DB',
+        borderRadius: 14,
+        paddingVertical: 14,
+        paddingHorizontal: 16,
+        marginBottom: 12,
+    },
+    modalOptionText: {
+        fontSize: 15,
+        color: '#3D2314',
+        fontWeight: '600',
+    },
+    modalCancel: {
+        marginTop: 6,
+        paddingVertical: 14,
+        borderRadius: 14,
+        alignItems: 'center',
+        backgroundColor: '#ECE1D7',
+    },
+    modalCancelText: {
+        fontSize: 15,
+        color: '#9A7A6A',
+        fontWeight: '700',
     },
 });

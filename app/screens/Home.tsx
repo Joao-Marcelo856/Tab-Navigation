@@ -3,10 +3,11 @@ import {
     View,
     Text,
     StyleSheet,
-    FlatList, // Importação do componente de lista performática
+    FlatList,
     TouchableOpacity,
     Animated,
     StatusBar,
+    ActivityIndicator,
 } from 'react-native';
 
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
@@ -31,7 +32,6 @@ export default function Home({ route, navigation }: Props) {
         }).start();
     }, []);
 
-    // Função que define como CADA item da lista será desenhado
     const renderPet = ({ item }: { item: typeof PETS_DATA[0] }) => (
         <TouchableOpacity
             style={[styles.card, { backgroundColor: item.cor }]}
@@ -66,12 +66,12 @@ export default function Home({ route, navigation }: Props) {
                 <Text style={styles.title}>Pets para Adoção</Text>
             </View>
 
-            <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
+            <Animated.View style={{ flex: 1, opacity: fadeAnim, }}>
                 <FlatList
-                    data={PETS_DATA} // 1. A fonte de dados
-                    renderItem={renderPet} // 2. Como cada item deve ser renderizado
-                    keyExtractor={(item) => item.id} // 3. Identificador único para cada item
-                    contentContainerStyle={styles.listContent} // 4. Estilo do conteúdo da lista
+                    data={PETS_DATA}
+                    renderItem={renderPet}
+                    keyExtractor={(item) => item.id}
+                    contentContainerStyle={styles.listContent}
                 />
             </Animated.View>
         </View>
